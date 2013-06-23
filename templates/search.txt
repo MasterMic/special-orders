@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<%include file="header.txt"/>
+
 	<body>
 		<!-- Navbar -->
 		<div class="navbar navbar-static-top">
@@ -22,5 +23,7 @@
 			<!-- Credit -->
 			<p class="muted credit text-center">Coded by <a href="http://www.ugrad.cs.ubc.ca/~k5r8/" target="_blank">MasterMic</a></p>
 		</div>
+
+		<%include file="footer.txt"/>
 	</body>
 </html>

@@ -1,6 +1,5 @@
 import cherrypy
 import sqlite3 as lite
-from mako.template import Template
 from mako.lookup import TemplateLookup
 import os.path
 
@@ -24,8 +23,8 @@ class SpecialOrders(object):
         return template.render(orders=orders, url="/")
 
     @cherrypy.expose
-    def add_item(self, distributor="", part_number="", part_desc="", customer="",
-                 cust_phone=""):
+    def add_item(self, distributor="", part_number="", part_desc="", price="",
+                 customer="", cust_phone="", status="Pending"):
 
         con = lite.connect("orders.db")
 
@@ -41,8 +40,10 @@ class SpecialOrders(object):
                 else:
                     id += 1
 
-            cur.execute("""INSERT INTO Orders VALUES(?, ?, ?, ?, ?, ?)""", (id,
-                        distributor, part_number, part_desc, customer, cust_phone))
+            # Add the item to the database
+            cur.execute("""INSERT INTO Orders VALUES(?, ?, ?, ?, ?, ?, ?, ?)""", (id,
+                        distributor, part_number, part_desc, price, customer, cust_phone,
+                        status))
 
         raise cherrypy.HTTPRedirect("/")
 
@@ -53,6 +54,16 @@ class SpecialOrders(object):
         with con:
             cur = con.cursor()
             cur.execute("DELETE FROM Orders WHERE Id=?", (id,))
+
+        raise cherrypy.HTTPRedirect(url)
+
+    @cherrypy.expose
+    def change_status(self, id=None, status="Pending", url="/"):
+        con = lite.connect("orders.db")
+
+        with con:
+            cur = con.cursor()
+            cur.execute("UPDATE Orders SET Status=? WHERE Id=?", (status, id))
 
         raise cherrypy.HTTPRedirect(url)
 
@@ -69,8 +80,8 @@ class SpecialOrders(object):
 
         results = set()
         for o in orders:
-            for f in o:
-                if str(f).lower() == query.lower():
+            for i in range(1, len(o)):
+                if query.lower() in str(o[i]).lower():
                     results.add(o)
 
         template = lookup.get_template("search.txt")
@@ -82,7 +93,8 @@ con = lite.connect("orders.db")
 with con:
     cur = con.cursor()
     cur.execute("""CREATE TABLE IF NOT EXISTS Orders(Id INT, Distributor TEXT,
-                PartNumber TEXT, PartDesc TEXT, Customer TEXT, CustPhone TEXT)""")
+                PartNumber TEXT, PartDesc TEXT, Price TEXT, Customer TEXT, CustPhone TEXT,
+                Status TEXT)""")
 
 
 # Start the cherrypy server

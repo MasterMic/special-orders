@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<%include file="header.txt"/>
+
 	<body>
 		<!-- Navbar -->
 		<div class="navbar navbar-static-top">
@@ -19,8 +20,14 @@
 				<input type="text" name="distributor" class="input-small" placeholder="Distributor" autofocus>
 				<input type="text" name="part_number" class="input-small" placeholder="Part Number">
 				<input type="text" name="part_desc" class="input-small" placeholder="Description">
+				<input type="text" name="price" class="input-small" placeholder="Price">
 				<input type="text" name="customer" class="input-small" placeholder="Customer">
 				<input type="text" name="cust_phone" class="input-small" placeholder="Phone">
+				<select class="input-small" name="status">
+					<option>Pending</option>
+					<option>Ordered</option>
+					<option>Here</option>
+				</select>
 				<button type="submit" class="btn btn-primary">Add Order</button>
 			</form>
 		</div>
@@ -31,5 +38,7 @@
 			<!-- Credit -->
 			<p class="muted credit text-center">Coded by <a href="http://www.ugrad.cs.ubc.ca/~k5r8/" target="_blank">MasterMic</a></p>
 		</div>
+
+		<%include file="footer.txt"/>
 	</body>
 </html>

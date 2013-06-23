@@ -1,7 +1,12 @@
 import cherrypy
 import sqlite3 as lite
 from mako.template import Template
+from mako.lookup import TemplateLookup
 import os.path
+
+
+path = os.path.abspath(os.path.dirname(__file__))
+lookup = TemplateLookup(directories=[path + "/templates/"])
 
 
 class SpecialOrders(object):
@@ -15,8 +20,8 @@ class SpecialOrders(object):
 
             orders = cur.fetchall()
 
-        template = Template(filename="templates/orders.txt")
-        return template.render(orders=orders)
+        template = lookup.get_template("orders.txt")
+        return template.render(orders=orders, url="/")
 
     @cherrypy.expose
     def add_item(self, distributor="", part_number="", part_desc="", customer="",
@@ -42,14 +47,14 @@ class SpecialOrders(object):
         raise cherrypy.HTTPRedirect("/")
 
     @cherrypy.expose
-    def delete_item(self, id=None):
+    def delete_item(self, id=None, url="/"):
         con = lite.connect("orders.db")
 
         with con:
             cur = con.cursor()
             cur.execute("DELETE FROM Orders WHERE Id=?", (id,))
 
-        raise cherrypy.HTTPRedirect("/")
+        raise cherrypy.HTTPRedirect(url)
 
     @cherrypy.expose
     def search(self, query=""):
@@ -68,8 +73,8 @@ class SpecialOrders(object):
                 if str(f).lower() == query.lower():
                     results.add(o)
 
-        template = Template(filename="templates/search.txt")
-        return template.render(query=query, orders=results)
+        template = lookup.get_template("search.txt")
+        return template.render(query=query, orders=results, url="/search?query=" + query)
 
 
 # Initialize the database
@@ -81,7 +86,6 @@ with con:
 
 
 # Start the cherrypy server
-path = os.path.abspath(os.path.dirname(__file__))
 cherrypy.quickstart(SpecialOrders(), "/", config={
     "global": {
         "server.socket_host": "0.0.0.0",

@@ -1,18 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Special Orders</title>
-		<meta name="robots" content="index, follow" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-		<!-- Favicon -->
-		<link rel="icon" type="image/png" href="/favicon.png">
-
-		<!-- Styles -->
-		<link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
-		<link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
-</head>
+	<%include file="header.txt"/>
 	<body>
 		<!-- Navbar -->
 		<div class="navbar navbar-static-top">
@@ -32,31 +20,13 @@
 				<input type="text" name="part_number" class="input-small" placeholder="Part Number">
 				<input type="text" name="part_desc" class="input-small" placeholder="Description">
 				<input type="text" name="customer" class="input-small" placeholder="Customer">
-				<input type="text" name="cust_phone" class="input-small" placeholder="Phone Number">
+				<input type="text" name="cust_phone" class="input-small" placeholder="Phone">
 				<button type="submit" class="btn btn-primary">Add Order</button>
 			</form>
-
+		</div>
+		<div class="container-fluid">
 			<!-- Orders -->
-			<table class="table table-hover table-bordered">
-				<thead>
-					<th>Distributor</th>
-					<th>Part Number</th>
-					<th>Description</th>
-					<th>Customer</th>
-					<th>Phone Number</th>
-					<th style="width: 40px">Action</th>
-				</thead>
-			% for o in orders:
-				<tr>
-					<td>${o[1]}</td>
-					<td>${o[2]}</td>
-					<td>${o[3]}</td>
-					<td>${o[4]}</td>
-					<td>${o[5]}</td>
-					<td><a href="/delete_item?id=${o[0]}">Delete</a></td>
-				</tr>
-			% endfor
-			</table>
+			<%include file="orders_table.txt"/>
 
 			<!-- Credit -->
 			<p class="muted credit text-center">Coded by <a href="http://www.ugrad.cs.ubc.ca/~k5r8/" target="_blank">MasterMic</a></p>

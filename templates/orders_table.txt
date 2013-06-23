@@ -1,0 +1,24 @@
+% if len(orders) > 0:
+	<table class="table table-hover table-bordered">
+		<thead>
+			<th>Distributor</th>
+			<th>Part Number</th>
+			<th>Description</th>
+			<th>Customer</th>
+			<th>Phone Number</th>
+			<th style="width: 40px">Action</th>
+		</thead>
+	% for o in orders:
+		<tr>
+			<td>${o[1]}</td>
+			<td>${o[2]}</td>
+			<td>${o[3]}</td>
+			<td>${o[4]}</td>
+			<td>${o[5]}</td>
+			<td><a href="/delete_item?id=${o[0]}&url=${url}">Delete</a></td>
+		</tr>
+	% endfor
+	</table>
+% else:
+	<h4 class="text-center well">No orders!</h4>
+% endif

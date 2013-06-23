@@ -1,5 +1,7 @@
 import cherrypy
 import sqlite3 as lite
+from mako.template import Template
+import os.path
 
 
 class SpecialOrders(object):
@@ -12,7 +14,8 @@ class SpecialOrders(object):
 
             orders = cur.fetchall()
 
-            return str(orders)
+        template = Template(filename="templates/orders.txt")
+        return template.render(orders=orders)
 
     index.exposed = True
 
@@ -25,5 +28,19 @@ with con:
 
 
 # Start the cherrypy server
-cherrypy.config.update("cherrypy.conf")
-cherrypy.quickstart(SpecialOrders())
+path = os.path.abspath(os.path.dirname(__file__))
+cherrypy.quickstart(SpecialOrders(), "/", config={
+    "global": {
+        "server.socket_host": "0.0.0.0",
+        "server.socket_port": 9000,
+        "tools.staticfile.root": path
+    },
+    "/bootstrap.min.css": {
+        "tools.staticfile.on": True,
+        "tools.staticfile.filename": "css/bootstrap.min.css"
+    },
+    "/bootstrap-responsive.min.css": {
+        "tools.staticfile.on": True,
+        "tools.staticfile.filename": "css/bootstrap-responsive.min.css"
+    }
+})

@@ -19,23 +19,35 @@ class SpecialOrders(object):
         return template.render(orders=orders)
 
     @cherrypy.expose
-    def add_item(self, id=1, description=""):
+    def add_item(self, distributor="", part_number="", part_desc="", customer="",
+                 cust_phone=""):
+
         con = lite.connect("orders.db")
 
         with con:
             cur = con.cursor()
-            cur.execute("INSERT INTO Orders VALUES(?, ?)", (id, description))
+
+            # Find a unique ID
+            id = 1
+            while True:
+                cur.execute("SELECT * FROM Orders WHERE Id=?", (id,))
+                if len(cur.fetchall()) is 0:
+                    break
+                else:
+                    id += 1
+
+            cur.execute("""INSERT INTO Orders VALUES(?, ?, ?, ?, ?, ?)""", (id,
+                        distributor, part_number, part_desc, customer, cust_phone))
 
         raise cherrypy.HTTPRedirect("/")
 
     @cherrypy.expose
     def delete_item(self, id=None):
-        id = (id,)
         con = lite.connect("orders.db")
 
         with con:
             cur = con.cursor()
-            cur.execute("DELETE FROM Orders WHERE Id=?", id)
+            cur.execute("DELETE FROM Orders WHERE Id=?", (id,))
 
         raise cherrypy.HTTPRedirect("/")
 
@@ -44,7 +56,8 @@ class SpecialOrders(object):
 con = lite.connect("orders.db")
 with con:
     cur = con.cursor()
-    cur.execute("CREATE TABLE IF NOT EXISTS Orders(Id INT, Item TEXT)")
+    cur.execute("""CREATE TABLE IF NOT EXISTS Orders(Id INT, Distributor TEXT,
+                PartNumber TEXT, PartDesc TEXT, Customer TEXT, CustPhone TEXT)""")
 
 
 # Start the cherrypy server

@@ -7,32 +7,44 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<!-- Styles -->
-		<link href="/bootstrap.min.css" rel="stylesheet" media="screen">
-		<link href="/bootstrap-responsive.min.css" rel="stylesheet">
+		<link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
 </head>
 	<body>
 		<!-- Navbar -->
 		<div class="navbar navbar-static-top">
 			<div class="navbar-inner">
 				<a class="brand" href="#">Special Orders</a>
-				<p class="navbar-text pull-right">A simple special order manager.</p>
+				<p class="navbar-text pull-right">A simple special order manager</p>
 			</div>
 		</div>
 
+		<!-- Content -->
 		<div class="container-fluid" style="padding-top: 20px">
+			<!-- New order form -->
+			<form class="form-inline pull-right" action="add_item">
+				<input type="number" name="number" min="1" class="input-small" placeholder="#">
+				<input type="text" name="description" class="input-large" placeholder="Item Description">
+				<button type="submit" class="btn">Add Order</button>
+			</form>
+
 			<!-- Orders -->
 			<table class="table table-hover table-bordered">
 				<thead>
-					<th>#</th>
-					<th>Item</th>
+					<th style="width: 20px">#</th>
+					<th>Item Description</th>
+					<th style="width: 40px">Action</th>
 				</thead>
 			% for o in orders:
 				<tr>
 					<td>${o[0]}</td>
 					<td>${o[1]}</td>
+					<td><button class="btn btn-link">Archive</button></td>
 				</tr>
 			% endfor
 			</table>
+
+			<!-- Credit -->
 			<p class="muted credit text-center">Coded by <a href="http://www.ugrad.cs.ubc.ca/~k5r8/" target="_blank">MasterMic</a></p>
 		</div>
 	</body>

@@ -6,6 +6,9 @@
 		<meta name="robots" content="index, follow" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+		<!-- Favicon -->
+		<link rel="icon" type="image/png" href="/favicon.png">
+
 		<!-- Styles -->
 		<link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
 		<link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
@@ -23,7 +26,7 @@
 		<div class="container-fluid" style="padding-top: 20px">
 			<!-- New order form -->
 			<form class="form-inline pull-right" action="add_item">
-				<input type="number" name="number" min="1" class="input-small" placeholder="#">
+				<input type="number" name="id" min="1" autofocus="autofocus" class="input-small" placeholder="#" required>
 				<input type="text" name="description" class="input-large" placeholder="Item Description">
 				<button type="submit" class="btn">Add Order</button>
 			</form>
@@ -39,7 +42,7 @@
 				<tr>
 					<td>${o[0]}</td>
 					<td>${o[1]}</td>
-					<td><button class="btn btn-link">Archive</button></td>
+					<td><a href="/delete_item?id=${o[0]}">Delete</a></td>
 				</tr>
 			% endfor
 			</table>

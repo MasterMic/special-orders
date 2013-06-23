@@ -5,6 +5,7 @@ import os.path
 
 
 class SpecialOrders(object):
+    @cherrypy.expose
     def index(self):
         con = lite.connect("orders.db")
 
@@ -17,18 +18,26 @@ class SpecialOrders(object):
         template = Template(filename="templates/orders.txt")
         return template.render(orders=orders)
 
-    index.exposed = True
-
-    def add_item(self, number=1, description=""):
+    @cherrypy.expose
+    def add_item(self, id=1, description=""):
         con = lite.connect("orders.db")
 
         with con:
             cur = con.cursor()
-            cur.execute("INSERT INTO Orders VALUES(?, ?)", (number, description))
+            cur.execute("INSERT INTO Orders VALUES(?, ?)", (id, description))
 
         raise cherrypy.HTTPRedirect("/")
 
-    add_item.exposed = True
+    @cherrypy.expose
+    def delete_item(self, id=None):
+        id = (id,)
+        con = lite.connect("orders.db")
+
+        with con:
+            cur = con.cursor()
+            cur.execute("DELETE FROM Orders WHERE Id=?", id)
+
+        raise cherrypy.HTTPRedirect("/")
 
 
 # Initialize the database
@@ -44,7 +53,8 @@ cherrypy.quickstart(SpecialOrders(), "/", config={
     "global": {
         "server.socket_host": "0.0.0.0",
         "server.socket_port": 9000,
-        "tools.staticdir.root": path
+        "tools.staticdir.root": path,
+        "tools.staticfile.root": path
     },
     "/css": {
         "tools.staticdir.on": True,
@@ -57,5 +67,9 @@ cherrypy.quickstart(SpecialOrders(), "/", config={
     "/js": {
         "tools.staticdir.on": True,
         "tools.staticdir.dir": "js/"
+    },
+    "/favicon.png": {
+        "tools.staticfile.on": True,
+        "tools.staticfile.filename": "favicon.png"
     }
 })

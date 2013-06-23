@@ -51,6 +51,26 @@ class SpecialOrders(object):
 
         raise cherrypy.HTTPRedirect("/")
 
+    @cherrypy.expose
+    def search(self, query=""):
+        con = lite.connect("orders.db")
+
+        with con:
+            cur = con.cursor()
+
+            cur.execute("SELECT * FROM Orders")
+
+            orders = cur.fetchall()
+
+        results = set()
+        for o in orders:
+            for f in o:
+                if str(f).lower() == query.lower():
+                    results.add(o)
+
+        template = Template(filename="templates/search.txt")
+        return template.render(query=query, orders=results)
+
 
 # Initialize the database
 con = lite.connect("orders.db")

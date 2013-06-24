@@ -25,11 +25,9 @@
 			</form>
 		</div>
 		<div class="container-fluid">
-			<!-- Orders -->
 			<%include file="orders_table.txt"/>
 
-			<!-- Credit -->
-			<p class="muted credit text-center">Coded by <a href="http://www.ugrad.cs.ubc.ca/~k5r8/" target="_blank">MasterMic</a></p>
+			<%include file="credit.txt"/>
 		</div>
 
 		<%include file="footer.txt"/>

@@ -3,18 +3,15 @@
 	<%include file="header.txt"/>
 
 	<body>
-		<!-- Navbar -->
 		<%include file="navbar.txt"/>
 
 		<!-- Content -->
 		<div class="container-fluid" style="padding-top: 20px">
 			<h4 class="text-center well">Showing search results for "${query}" (<a href="/">Show all orders</a>)</h4>
 			
-			<!-- Orders -->
 			<%include file="orders_table.txt"/>
 
-			<!-- Credit -->
-			<p class="muted credit text-center">Coded by <a href="http://www.ugrad.cs.ubc.ca/~k5r8/" target="_blank">MasterMic</a></p>
+			<%include file="credit.txt"/>
 		</div>
 
 		<%include file="footer.txt"/>

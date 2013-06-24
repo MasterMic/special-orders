@@ -15,9 +15,14 @@ class SpecialOrders(object):
 
         with con:
             cur = con.cursor()
-            cur.execute("SELECT * FROM Orders")
-
+            cur.execute("SELECT * FROM Orders WHERE Status=\"Pending\"")
             orders = cur.fetchall()
+
+            cur.execute("SELECT * FROM Orders WHERE Status=\"Ordered\"")
+            orders += cur.fetchall()
+
+            cur.execute("SELECT * FROM Orders WHERE Status=\"Here\"")
+            orders += cur.fetchall()
 
         template = lookup.get_template("orders.txt")
         return template.render(orders=orders, url="/")

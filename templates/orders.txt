@@ -4,23 +4,16 @@
 
 	<body>
 		<!-- Navbar -->
-		<div class="navbar navbar-static-top">
-			<div class="navbar-inner">
-				<a class="brand" href="/">Special Orders</a>
-				<form class="navbar-search pull-right" action="search">
-					<input type="text" name="query" class="search-query" placeholder="Search">
-				</form>
-			</div>
-		</div>
+		<%include file="navbar.txt"/>
 
 		<!-- Content -->
 		<div class="container-fluid" style="padding-top: 20px">
 			<!-- New order form -->
 			<form class="form-inline pull-right" action="add_item">
-				<input type="text" name="distributor" class="input-small" placeholder="Distributor" autofocus>
+				<input type="text" name="distributor" class="input-small" placeholder="Distributor">
 				<input type="text" name="part_number" class="input-small" placeholder="Part Number">
 				<input type="text" name="part_desc" class="input-small" placeholder="Description">
-				<input type="text" name="price" class="input-small" placeholder="Price">
+				<input type="text" name="price" class="input-mini" placeholder="Price">
 				<input type="text" name="customer" class="input-small" placeholder="Customer">
 				<input type="text" name="cust_phone" class="input-small" placeholder="Phone">
 				<select class="input-small" name="status">

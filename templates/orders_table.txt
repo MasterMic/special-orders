@@ -43,36 +43,71 @@
 	% for o in orders:
 		<!-- Modal -->
 		<div id="editModal${o[0]}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel${o[0]}" aria-hidden="true">
-			<form action="edit_item?id=${o[0]}&url=${url}" method="post" style="margin-bottom: 0px">
+			<form class="form-horizontal" action="edit_item?id=${o[0]}&url=${url}" method="post" style="margin-bottom: 0px">
 				<div class="modal-header">
 					<h3 id="modalLabel${o[0]}">Edit</h3>
 				</div>
 				<div class="modal-body">
-					<input type="text" name="distributor" class="input-small" placeholder="Distributor" value="${o[1]}">
-					<input type="text" name="part_number" class="input-small" placeholder="Part Number" value="${o[2]}">
-					<input type="text" name="part_desc" class="input-small" placeholder="Description" value="${o[3]}">
-					<input type="text" name="price" class="input-mini" placeholder="Price" value="${o[4]}">
-					<input type="text" name="customer" class="input-small" placeholder="Customer" value="${o[5]}">
-					<input type="text" name="cust_phone" class="input-small" placeholder="Phone" value="${o[6]}">
-					<select class="input-small" name="status">
-					% if o[7] == "Pending":
-						<option selected="selected">Pending</option>
-						<option>Ordered</option>
-						<option>Here</option>
-					% elif o[7] == "Ordered":
-						<option>Pending</option>
-						<option selected="selected">Ordered</option>
-						<option>Here</option>
-					% else:
-						<option>Pending</option>
-						<option>Ordered</option>
-						<option selected="selected">Here</option>
-					% endif
-					</select>
+					<div class="control-group">
+						<label class="control-label">Distributor</label>
+						<div class="controls">
+							<input type="text" name="distributor" placeholder="Distributor" value="${o[1]}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Part Number</label>
+						<div class="controls">
+							<input type="text" name="part_number" class="input-medium" placeholder="Part Number" value="${o[2]}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Description</label>
+						<div class="controls">
+							<input type="text" name="part_desc" placeholder="Description" value="${o[3]}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Price</label>
+						<div class="controls">
+							<input type="text" name="price" class="input-mini" placeholder="Price" value="${o[4]}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Customer</label>
+						<div class="controls">
+							<input type="text" name="customer" placeholder="Customer" value="${o[5]}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Phone</label>
+						<div class="controls">
+							<input type="text" name="cust_phone" class="input-medium" placeholder="Phone" value="${o[6]}">
+						</div>
+					</div>
+					<div class="control-group">
+						<label class="control-label">Status</label>
+						<div class="controls">
+							<select class="input-small" name="status">
+							% if o[7] == "Pending":
+								<option selected="selected">Pending</option>
+								<option>Ordered</option>
+								<option>Here</option>
+							% elif o[7] == "Ordered":
+								<option>Pending</option>
+								<option selected="selected">Ordered</option>
+								<option>Here</option>
+							% else:
+								<option>Pending</option>
+								<option>Ordered</option>
+								<option selected="selected">Here</option>
+							% endif
+							</select>
+						</div>
+					</div>
 				</div>
 				<div class="modal-footer">
-					<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
 					<button class="btn btn-primary" type="submit">Save</button>
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
 				</div>
 			</form>
 		</div>

@@ -63,12 +63,26 @@ class SpecialOrders(object):
         raise cherrypy.HTTPRedirect(url)
 
     @cherrypy.expose
-    def change_status(self, id=None, status="Pending", url="/"):
+    def change_status(self, id, status="Pending", url="/"):
         con = lite.connect("orders.db")
 
         with con:
             cur = con.cursor()
             cur.execute("UPDATE Orders SET Status=? WHERE Id=?", (status, id))
+
+        raise cherrypy.HTTPRedirect(url)
+
+    @cherrypy.expose
+    def edit_item(self, id, distributor="", part_number="", part_desc="", price="",
+                  customer="", cust_phone="", status="Pending", url="/"):
+        con = lite.connect("orders.db")
+
+        with con:
+            cur = con.cursor()
+            cur.execute("""UPDATE Orders SET Distributor=?, PartNumber=?, PartDesc=?,
+                        Price=?, Customer=?, CustPhone=?, Status=? WHERE Id=?""",
+                        (distributor, part_number, part_desc, price, customer, cust_phone,
+                        status, id))
 
         raise cherrypy.HTTPRedirect(url)
 

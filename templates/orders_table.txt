@@ -11,15 +11,15 @@
 			<th style="width: 50px">Action</th>
 		</thead>
 	% for o in orders:
-		% if o[7] == "Pending":
+	% if o[7] == "Pending":
 		<tr class="warning">
-		% elif o[7] == "Ordered":
+	% elif o[7] == "Ordered":
 		<tr class="info">
-		% elif o[7] == "Here":
+	% elif o[7] == "Here":
 		<tr class="success">
-		% else:
+	% else:
 		<tr>
-		% endif
+	% endif
 			<td>${o[1]}</td>
 			<td>${o[2]}</td>
 			<td>${o[3]}</td>
@@ -28,37 +28,56 @@
 			<td>${o[6]}</td>
 			<td>${o[7]}</td>
 			<td><div class="dropdown">
-				<a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="${url}">
-					Action<b class="caret"></b>
-				</a>
+				<a class="dropdown-toggle" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="${url}">Action<b class="caret"></b></a>
 				<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dLabel">
 					<li><a tabindex="-1" href="/change_status?id=${o[0]}&status=Pending&url=${url}">Mark as Pending</a></li>
 					<li><a tabindex="-1" href="/change_status?id=${o[0]}&status=Ordered&url=${url}">Mark as Ordered</a></li>
 					<li><a tabindex="-1" href="/change_status?id=${o[0]}&status=Here&url=${url}">Mark as Here</a></li>
-					<li>
-						<!-- Button to trigger modal -->
-						<a href="#editModal${o[0]}" role="button" data-toggle="modal">Edit</a>
-
-						<!-- Modal -->
-						<div id="editModal${o[0]}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel${o[0]}" aria-hidden="true">
-							<div class="modal-header">
-								<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icon-remove"></i></button>
-								<h3 id="modalLabel${o[0]}">Edit</h3>
-							</div>
-							<div class="modal-body">
-								<p>Test</p>
-							</div>
-							<div class="modal-footer">
-								<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-								<button class="btn btn-primary">Save</button>
-							</div>
-						</div></li>
+					<li><a href="#editModal${o[0]}" role="button" data-toggle="modal">Edit</a></li>
 					<li><a tabindex="-1" href="/delete_item?id=${o[0]}&url=${url}">Delete</a></li>
 				</ul>
 			</div></td>
 		</tr>
 	% endfor
 	</table>
+	% for o in orders:
+		<!-- Modal -->
+		<div id="editModal${o[0]}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel${o[0]}" aria-hidden="true">
+			<form action="edit_item?id=${o[0]}&url=${url}" method="post" style="margin-bottom: 0px">
+				<div class="modal-header">
+					<h3 id="modalLabel${o[0]}">Edit</h3>
+				</div>
+				<div class="modal-body">
+					<input type="text" name="distributor" class="input-small" placeholder="Distributor" value="${o[1]}">
+					<input type="text" name="part_number" class="input-small" placeholder="Part Number" value="${o[2]}">
+					<input type="text" name="part_desc" class="input-small" placeholder="Description" value="${o[3]}">
+					<input type="text" name="price" class="input-mini" placeholder="Price" value="${o[4]}">
+					<input type="text" name="customer" class="input-small" placeholder="Customer" value="${o[5]}">
+					<input type="text" name="cust_phone" class="input-small" placeholder="Phone" value="${o[6]}">
+					<select class="input-small" name="status">
+					% if o[7] == "Pending":
+						<option selected="selected">Pending</option>
+						<option>Ordered</option>
+						<option>Here</option>
+					% elif o[7] == "Ordered":
+						<option>Pending</option>
+						<option selected="selected">Ordered</option>
+						<option>Here</option>
+					% else:
+						<option>Pending</option>
+						<option>Ordered</option>
+						<option selected="selected">Here</option>
+					% endif
+					</select>
+				</div>
+				<div class="modal-footer">
+					<button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+					<button class="btn btn-primary" type="submit">Save</button>
+				</div>
+			</form>
+		</div>
+	% endfor
+	</div>
 % else:
 	<h4 class="text-center well">No orders!</h4>
 % endif

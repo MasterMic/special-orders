@@ -9,7 +9,7 @@
 		<!-- Content -->
 		<div class="container-fluid" style="padding-top: 20px">
 			<!-- New order form -->
-			<form class="form-inline pull-right" action="add_item">
+			<form class="form-inline pull-right" action="add_item" method="post">
 				<input type="text" name="distributor" class="input-small" placeholder="Distributor">
 				<input type="text" name="part_number" class="input-small" placeholder="Part Number">
 				<input type="text" name="part_desc" class="input-small" placeholder="Description">

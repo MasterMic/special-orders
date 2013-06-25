@@ -27,6 +27,8 @@
 		<div class="container-fluid">
 			<%include file="orders_table.txt"/>
 
+			<h4 class="text-center well"><a href="/archive">Show archived orders</a></h4>
+
 			<%include file="credit.txt"/>
 		</div>
 

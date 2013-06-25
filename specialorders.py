@@ -28,6 +28,24 @@ class SpecialOrders(object):
         return template.render(orders=orders, url="/")
 
     @cherrypy.expose
+    def archive(self):
+        con = lite.connect("orders.db")
+
+        with con:
+            cur = con.cursor()
+            cur.execute("SELECT * FROM Archive WHERE Status=\"Pending\"")
+            orders = cur.fetchall()
+
+            cur.execute("SELECT * FROM Archive WHERE Status=\"Ordered\"")
+            orders += cur.fetchall()
+
+            cur.execute("SELECT * FROM Archive WHERE Status=\"Here\"")
+            orders += cur.fetchall()
+
+        template = lookup.get_template("archive.txt")
+        return template.render(orders=orders, url="/archive")
+
+    @cherrypy.expose
     def add_item(self, distributor="", part_number="", part_desc="", price="",
                  customer="", cust_phone="", status="Pending"):
 
@@ -39,7 +57,8 @@ class SpecialOrders(object):
             # Find a unique ID
             id = 1
             while True:
-                cur.execute("SELECT * FROM Orders WHERE Id=?", (id,))
+                cur.execute("""SELECT * FROM Orders WHERE Id=? UNION ALL
+                            SELECT * FROM Archive WHERE Id=?""", (id, id))
                 if len(cur.fetchall()) is 0:
                     break
                 else:
@@ -59,6 +78,29 @@ class SpecialOrders(object):
         with con:
             cur = con.cursor()
             cur.execute("DELETE FROM Orders WHERE Id=?", (id,))
+            cur.execute("DELETE FROM Archive WHERE Id=?", (id,))
+
+        raise cherrypy.HTTPRedirect(url)
+
+    @cherrypy.expose
+    def archive_item(self, id=None, url="/"):
+        con = lite.connect("orders.db")
+
+        with con:
+            cur = con.cursor()
+            cur.execute("INSERT INTO Archive SELECT * FROM Orders WHERE id=?", (id,))
+            cur.execute("DELETE FROM Orders WHERE Id=?", (id,))
+
+        raise cherrypy.HTTPRedirect(url)
+
+    @cherrypy.expose
+    def unarchive_item(self, id=None, url="/"):
+        con = lite.connect("orders.db")
+
+        with con:
+            cur = con.cursor()
+            cur.execute("INSERT INTO Orders SELECT * FROM Archive WHERE id=?", (id,))
+            cur.execute("DELETE FROM Archive WHERE Id=?", (id,))
 
         raise cherrypy.HTTPRedirect(url)
 
@@ -114,6 +156,9 @@ with con:
     cur.execute("""CREATE TABLE IF NOT EXISTS Orders(Id INT, Distributor TEXT,
                 PartNumber TEXT, PartDesc TEXT, Price TEXT, Customer TEXT, CustPhone TEXT,
                 Status TEXT)""")
+    cur.execute("""CREATE TABLE IF NOT EXISTS Archive(Id INT, Distributor TEXT,
+                PartNumber TEXT, PartDesc TEXT, Price TEXT, Customer TEXT, CustPhone TEXT,
+                Status TEXT)""")
 
 
 # Start the cherrypy server
@@ -139,5 +184,9 @@ cherrypy.quickstart(SpecialOrders(), "/", config={
     "/favicon.png": {
         "tools.staticfile.on": True,
         "tools.staticfile.filename": "favicon.png"
+    },
+    "/divider.png": {
+        "tools.staticfile.on": True,
+        "tools.staticfile.filename": "divider.png"
     }
 })

@@ -34,6 +34,7 @@
 					<li><a tabindex="-1" href="/change_status?id=${o[0]}&status=Ordered&url=${url}">Mark as Ordered</a></li>
 					<li><a tabindex="-1" href="/change_status?id=${o[0]}&status=Here&url=${url}">Mark as Here</a></li>
 					<li><a href="#editModal${o[0]}" role="button" data-toggle="modal">Edit</a></li>
+					<li><a tabindex="-1" href="/archive_item?id=${o[0]}&url=${url}">Archive</a></li>
 					<li><a tabindex="-1" href="/delete_item?id=${o[0]}&url=${url}">Delete</a></li>
 				</ul>
 			</div></td>
@@ -45,7 +46,7 @@
 		<div id="editModal${o[0]}" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="modalLabel${o[0]}" aria-hidden="true">
 			<form class="form-horizontal" action="edit_item?id=${o[0]}&url=${url}" method="post" style="margin-bottom: 0px">
 				<div class="modal-header">
-					<h3 id="modalLabel${o[0]}">Edit</h3>
+					<h3 id="modalLabel${o[0]}">Edit Order</h3>
 				</div>
 				<div class="modal-body">
 					<div class="control-group">
@@ -112,7 +113,6 @@
 			</form>
 		</div>
 	% endfor
-	</div>
 % else:
 	<h4 class="text-center well">No orders!</h4>
 % endif

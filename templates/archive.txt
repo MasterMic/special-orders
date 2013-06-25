@@ -7,7 +7,7 @@
 
 		<!-- Content -->
 		<div class="container-fluid" style="padding-top: 20px">
-			<h4 class="text-center well">Showing archived orders (<a href="/">Show all orders</a>)</h4>
+			<h4 class="text-center well">Showing archived orders (<a href="/">Show all orders</a>):</h4>
 			
 			<%include file="archive_table.txt"/>
 

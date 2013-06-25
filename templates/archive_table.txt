@@ -1,4 +1,4 @@
-% if len(orders) > 0:
+% if len(old_orders) > 0:
 	<table class="table table-hover table-bordered">
 		<thead>
 			<th>Distributor</th>
@@ -10,7 +10,7 @@
 			<th style="width: 50px">Status</th>
 			<th style="width: 50px">Action</th>
 		</thead>
-	% for o in orders:
+	% for o in old_orders:
 	% if o[7] == "Pending":
 		<tr class="warning">
 	% elif o[7] == "Ordered":

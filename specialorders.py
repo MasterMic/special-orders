@@ -34,16 +34,16 @@ class SpecialOrders(object):
         with con:
             cur = con.cursor()
             cur.execute("SELECT * FROM Archive WHERE Status=\"Pending\"")
-            orders = cur.fetchall()
+            old_orders = cur.fetchall()
 
             cur.execute("SELECT * FROM Archive WHERE Status=\"Ordered\"")
-            orders += cur.fetchall()
+            old_orders += cur.fetchall()
 
             cur.execute("SELECT * FROM Archive WHERE Status=\"Here\"")
-            orders += cur.fetchall()
+            old_orders += cur.fetchall()
 
         template = lookup.get_template("archive.txt")
-        return template.render(orders=orders, url="/archive")
+        return template.render(old_orders=old_orders, url="/archive")
 
     @cherrypy.expose
     def add_item(self, distributor="", part_number="", part_desc="", price="",
@@ -136,8 +136,10 @@ class SpecialOrders(object):
             cur = con.cursor()
 
             cur.execute("SELECT * FROM Orders")
-
             orders = cur.fetchall()
+
+            cur.execute("SELECT * FROM Archive")
+            archive = cur.fetchall()
 
         results = set()
         for o in orders:
@@ -145,8 +147,15 @@ class SpecialOrders(object):
                 if query.lower() in str(o[i]).lower():
                     results.add(o)
 
+        old_orders = set()
+        for o in archive:
+            for i in range(1, len(o)):
+                if query.lower() in str(o[i]).lower():
+                    old_orders.add(o)
+
         template = lookup.get_template("search.txt")
-        return template.render(query=query, orders=results, url="/search?query=" + query)
+        return template.render(query=query, orders=results, old_orders=old_orders,
+                               url="/search?query=" + query)
 
 
 # Initialize the database
